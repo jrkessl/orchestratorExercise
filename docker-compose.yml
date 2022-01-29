@@ -1,0 +1,48 @@
+# exercicio do drupal, criando uma nova imagem. 
+
+version: "3.8"
+services:
+  meupostgres:
+    image: postgres
+    container_name: meupostgres
+    environment:
+      - POSTGRES_PASSWORD=larissinha
+    networks: 
+      - net1
+    ports:
+      - "5432:5432"
+    volumes:
+      - type: volume
+        source: meuvol-postgres
+        target: /var/lib/postgresql/data
+        
+  trabalhador:
+    image: trabalhador
+    container_name: trabalhador
+    networks:
+      - net1
+    build:
+      context: .
+
+#  custom-drupal:
+#    build: .
+#      context: .
+#      dockerfile: Dockerfile  
+#    image: custom-drupal:latest
+#    ports:
+#      - "80:8080"
+#    container_name: custom-drupal # para que o nome da pasta não seja usado como prefixo no nome do container. 
+#    networks: 
+#      - net1
+#    environment:
+#      - POSTGRES_PASSWORD=larissinha
+#      - POSTGRES_DB=postgres 
+#      - POSTGRES_USER=postgres 
+
+networks:
+  net1:
+  
+volumes:
+  meuvol-postgres:
+
+
