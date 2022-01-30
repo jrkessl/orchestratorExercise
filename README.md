@@ -57,7 +57,7 @@ start container in swarm:
     docker service update <id> --replicas 3
 
 
-docker swarm join --token SWMTKN-1-1js4qrlu35gjoaw82rq3zme3b228teogo6zc3af19yeomnbal3-3ytpela6ul86uw4zownnkp78c 192.168.15.9:2377
+docker swarm join --token xxxxxx <ip:port>
 
 docker service create --env POSTGRES_PASSWORD=larissinha --name meupostgres --network swarmexercicio1_net1 postgres
 
