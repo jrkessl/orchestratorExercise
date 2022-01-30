@@ -36,8 +36,29 @@ tentar lançar um swarm local de qualquer imagem (até de uma das minhas, talvez
 	mas antes, fazer:
 		criar um postgres persistente (no docker-compose): ok
 		criar um container "trabalhador": ok
-		colocar o "trabalhador" no docker-compose: pendente
+		colocar o "trabalhador" no docker-compose: ok
 		colocar tudo isso no swarm: pendente.
 		
 		
 how to format an MD file: https://medium.com/@saumya.ranjan/how-to-write-a-readme-md-file-markdown-file-20cb7cbcd6f 
+
+swarm commands:
+see if active:
+    docker info
+initialyze:
+    docker swarm init 
+ls:
+    docker node ls
+start container in swarm:
+    docker service ...
+    docker service ls                                   lista os serviços
+    docker service create alpine ping 8.8.8.8
+    docker service ps <service name>                    lista onde roda cada instância dos serviços
+    docker service update <id> --replicas 3
+
+
+docker swarm join --token SWMTKN-1-1js4qrlu35gjoaw82rq3zme3b228teogo6zc3af19yeomnbal3-3ytpela6ul86uw4zownnkp78c 192.168.15.9:2377
+
+docker service create --env POSTGRES_PASSWORD=larissinha --name meupostgres --network swarmexercicio1_net1 postgres
+
+swarmexercicio1_net1

@@ -7,6 +7,7 @@ import time
 import psycopg2
 import socket
 import sys
+import os
 
 #sudo pip install psycopg2-binary
 
@@ -16,7 +17,14 @@ def conecta():
     while not sucesso:
         try:
             connTemp = psycopg2.connect(
-                host="localhost",
+#               host="compose-meupostgres", # if this runs in a container, name of the database container goes here
+#               host="127.0.0.1",
+                host=os.getenv("ENDERECO_BANCO", "127.0.0.1"),# Recebe como parâmetro o endereço do banco de dados; Se:
+                                                              # > rodando no docker-swarm ou docker-compose? 
+                                                              #   aqui precisa estar o nome do container do banco de dados.
+                                                              # > o banco vai rodar fora do container ou com network=host?
+                                                              #   não precisa passar essa variável; ele vai então tentar 
+                                                              #   conectar no localhost mesmo. 
                 database="postgres",
                 user="postgres",
                 password="larissinha")
@@ -44,3 +52,4 @@ try:
 except Exception as e:
     print("Trabalhador: erro ao iterar: " + str(e))
     print("Trabalhador: programa encerrado.")
+    

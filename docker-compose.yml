@@ -4,7 +4,7 @@ version: "3.8"
 services:
   meupostgres:
     image: postgres
-    container_name: meupostgres
+    container_name: compose-meupostgres
     environment:
       - POSTGRES_PASSWORD=larissinha
     networks: 
@@ -18,7 +18,9 @@ services:
         
   trabalhador:
     image: trabalhador
-    container_name: trabalhador
+    environment: 
+      - ENDERECO_BANCO=compose-meupostgres
+    container_name: compose-trabalhador
     networks:
       - net1
     build:
