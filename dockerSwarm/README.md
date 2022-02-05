@@ -30,12 +30,12 @@ docker-compose down
 # launch stack in swarm
 docker stack deploy --file myCompose.yml myStack
 ```
-Get the IP of one of the swarm nodes and open in the browser:
-<ip>:80   > to vote 
-<ip>:5001 > to check voting results 
-<ip>:8080 > to check the service visualizer  
-
-And finally:
+Get the IP of one of the swarm nodes and open in the browser:  
+<ip>:80   > to vote   
+<ip>:5001 > to check voting results   
+<ip>:8080 > to check the service visualizer    
+  
+And finally:  
 ```
 # play around 
 docker stack rm <stack name>
