@@ -10,6 +10,9 @@ How do play with this:
 # launch 3 Ubuntu VM's to create your Docker Swarm (these will work in both Windows and Linux):
 git clone https://github.com/jrkessl/exampleMicroservice
 cp exampleMicroservice/cloud-init-master.yaml ./cloud-init-docker.yml 
+```
+Now clean up your ./cloud-init-docker.yml file and leave just the installation of docker utilities, git clones and checks in the end of the file. The other installations from this file will make VM launching take WAY too much time. Then proceed with steps below. 
+```
 # launch VMs
 multipass launch --name um --cloud-init ./cloud-init-docker.yml --cpus 1 --mem 1G --disk 10G
 multipass launch --name dois --cloud-init ./cloud-init-docker.yml --cpus 1 --mem 1G --disk 10G
