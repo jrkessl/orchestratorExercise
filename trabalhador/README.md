@@ -1,6 +1,5 @@
-# Orchestrator Exercise
-This is an exercise in container orchestrators. It aims just to exercise me in orchestrators and to serve as future code reference.
-Started January 2022.
+# trabalhador 
+Here I was testing and practicing with running containers, running PostgreSQL in a container, using named volumes, making the containerized software connect to a containerized database and then building, making it go up, and making it go down with docker-compose. 
 
 Content:  
  * trabalhador.py: this program is meant to be run in a container; it just connects to a database and writes an "i'm alive" signal.  
