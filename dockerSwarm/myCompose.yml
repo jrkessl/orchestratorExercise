@@ -1,0 +1,64 @@
+# If taking Docker Mastery, this is the same file you created in 
+# ./compose-assignment-2
+# If taking Swarm Mastery, this is your starting point for adding secrets :)
+# reminder, this needs to change to 3.1 version to use secrets!
+version: '3.8'
+
+services:
+
+  vote: # this acts as the dns name of the service, and it works either if you deploy 
+        # the stack with 'docker stack deploy ...' or if you deploy with 
+        # 'docker service create ....'.
+        # the prefix that will get added to the name of the service will NOT break 
+        # name resolution between services. The 'container_name' option used to just
+        # launch containers is not used by 'stack deploy' or 'service create'. 
+    image: dockersamples/examplevotingapp_vote
+    ports: 
+      - "80:80"
+    networks:
+      - frontend
+    deploy: 
+      replicas: 2
+    
+  redis:
+    image: redis:3.2
+    networks:
+      - frontend
+    
+  worker:
+    image: dockersamples/examplevotingapp_worker
+    networks:
+      - frontend
+      - backend
+      
+  db:
+    image: postgres:9.4
+    networks:
+      - backend
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+       
+  result:
+    image: dockersamples/examplevotingapp_result
+    ports:
+      - "5001:80"
+    networks:
+      - backend
+
+  visualizer:
+    image: dockersamples/visualizer
+    ports: 
+      - "0.0.0.0:8080:8080"
+    networks: 
+      - frontend
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    deploy:
+      placement:
+        constraints: [node.role==manager]
+
+networks:
+  frontend:
+    driver: overlay
+  backend:
+    driver: overlay
