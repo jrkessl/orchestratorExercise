@@ -27,6 +27,9 @@ multipass exec dois -- <put here the swarm join command that resulted from the p
 multipass exec tres -- <put here the swarm join command that resulted from the previous command.>
 # log in to the swarm master
 multipass shell um
+```
+Now clone this repo and go to folder dockerSwarm and then:
+```
 # test compose file
 docker-compose --file myCompose.yml up 
 docker-compose down
