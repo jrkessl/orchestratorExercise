@@ -34,7 +34,7 @@ Now clone this repo and go to folder dockerSwarm and then:
 docker-compose --file myCompose.yml up 
 docker-compose down
 # launch stack in swarm
-docker stack deploy --file myCompose.yml myStack
+docker stack deploy --compose-file myCompose.yml myStack
 ```
 Get the IP of one of the swarm nodes and open in the browser:  
 <ip>:80   > to vote   
