@@ -9,3 +9,5 @@ Useful references: building docker images, running docker containers, docker-com
 This is a play with dockersamples/examplevotingapp from hub.docker.com. With this app you vote and then check voting results.  
 Useful references: how to launch VMs to run orchestrators; initializing docker swarm; docker-compose file syntax (to use with docker swarm); launching a stack in docker swarm; playing with the stack; removing the stack.  
 
+## sample-nginx-k8s.yml
+Just a sample nginx declarative yml to deploy nginx in port 80 to your k8s cluster.
