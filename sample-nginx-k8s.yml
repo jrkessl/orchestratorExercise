@@ -1,52 +1,11 @@
-# this file deploys in kubernetes the complete "exampleMicroservices" project (or at least how it is today)
-# in Kubernetes. It contains the "meuServico" container that takes requests from another container, and 
-# the "servidorweb" container that connects in the aforementioned container and also hosts a web page with
-# results. This done using declarative Kubernetes. 
-# Tested in Microk8s. Usage:
-# microk8s.kubectl apply -f deployMeuservicoServidorweb.yml       # to deploy
-# microk8s.kubectl get all                                        # to get the IP of the LoadBalancer service created
-# curl <IP of the load balancer service created>:5000             # to see results. 
-
-# apiVersion: apps/v1
-# kind: Deployment
-# metadata:
-#   name: meunginx
-# spec:
-#   selector: 
-#     matchLabels: 
-#       app: meunginx
-#   replicas: 1
-#   template:
-#     metadata:
-#       labels:
-#         app: meunginx
-#     spec:
-#       containers:
-#         - image: nginx:latest
-#           name: vs
-#           ports:
-#              - containerPort: 80
-# ---
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: nginx-lb
-# spec:
-#   type: LoadBalancer
-#   ports: 
-#     - port: 80
-#   selector: 
-#     app: nginx
-
-
-
-
 apiVersion: v1
 kind: Service
 metadata:
   name: meunginx
 spec:
-  type: LoadBalancer
+  type: LoadBalancer    
+  # loadBalancerSourceRanges: # Optional: this adds rules in the security group of the AWS load balancer.
+  #   - 189.18.90.14/32
   ports: 
     - port: 80
   selector: 
