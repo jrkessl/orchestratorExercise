@@ -76,10 +76,13 @@ aws eks create-addon \
 ```
 
  * 
-
-
-``````
-``````
+### Cleanup. 
+ * Delete the eks cluster you provisioned (if you provisioned one for this exercise).  
+ * Delete the IAM role: 
+```
+aws iam delete-role --role-name my-AmazonEKS_EBS_CSI_DriverRole
+```
+  
 References:  
  - https://docs.aws.amazon.com/eks/latest/userguide/csi-iam-role.html
 
