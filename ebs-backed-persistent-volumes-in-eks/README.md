@@ -11,7 +11,8 @@ aws eks describe-cluster \
   --output text
 ```  
  * Create file 'aws-ebs-csi-driver-trust-policy.json' with the following content (Update: OIDC code, account number, region).  
-```{
+```
+{
   "Version": "2012-10-17",
   "Statement": [
     {
@@ -28,16 +29,20 @@ aws eks describe-cluster \
       }
     }
   ]
-}```  
+}
+```  
  * Create the role.  
-```aws iam create-role \
+```
+aws iam create-role \
   --role-name my-AmazonEKS_EBS_CSI_DriverRole \
-  --assume-role-policy-document file://"aws-ebs-csi-driver-trust-policy.json"```  
+  --assume-role-policy-document file://"aws-ebs-csi-driver-trust-policy.json"
+```  
  * Attach the required AWS managed policy to the role.  
-```aws iam attach-role-policy \
+```
+aws iam attach-role-policy \
   --policy-arn arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy \
-  --role-name my-AmazonEKS_EBS_CSI_DriverRole```
-
+  --role-name my-AmazonEKS_EBS_CSI_DriverRole
+```
  * Attach IAM policy to the role.  
 ``````
 
