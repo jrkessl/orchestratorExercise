@@ -43,40 +43,10 @@ aws iam attach-role-policy \
   --policy-arn arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy \
   --role-name my-AmazonEKS_EBS_CSI_DriverRole
 ```
- * Attach IAM policy to the role.  
-``````
+ * 
 
 
 ``````
 ``````
 References:  
  - https://docs.aws.amazon.com/eks/latest/userguide/csi-iam-role.html
-
- # ``````
-
-
-## My steps.  
-```
-export AWS_DEFAULT_REGION=sa-east-1
-```
-
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "Federated": "arn:aws:iam::516176675572:oidc-provider/oidc.eks.sa-east-1.amazonaws.com/id/CCA486906DDDBEF6F58D8821DE9B6866"
-                                                                                                 
-
-      },
-      "Action": "sts:AssumeRoleWithWebIdentity",
-      "Condition": {
-        "StringEquals": {
-          "oidc.eks.region-code.amazonaws.com/id/EXAMPLED539D4633E53DE1B71EXAMPLE:aud": "sts.amazonaws.com",
-          "oidc.eks.region-code.amazonaws.com/id/EXAMPLED539D4633E53DE1B71EXAMPLE:sub": "system:serviceaccount:kube-system:ebs-csi-controller-sa"
-        }
-      }
-    }
-  ]
-}
