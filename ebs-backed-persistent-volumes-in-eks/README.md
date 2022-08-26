@@ -1,5 +1,6 @@
 # EBS-backed persistent volumes for EKS, sample  
 ## How to setup, from scratch, persistent volumes in AWS EKS.  
+### Create IAM policy and role for the EBS CSI driver.
  * Provision a working EKS cluster.
  * Set your working region.  
 ```export AWS_DEFAULT_REGION=sa-east-1```
@@ -43,6 +44,11 @@ aws iam attach-role-policy \
   --policy-arn arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy \
   --role-name my-AmazonEKS_EBS_CSI_DriverRole
 ```
+### Install eksctl (to create an IAM OIDC identity provider for your cluster)  
+```curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp```
+```sudo mv /tmp/eksctl /usr/local/bin```  
+(to test)```eksctl version```  
+### Create an IAM OIDC identity provider for your cluster (using eksctl)
  * 
 
 
@@ -50,3 +56,6 @@ aws iam attach-role-policy \
 ``````
 References:  
  - https://docs.aws.amazon.com/eks/latest/userguide/csi-iam-role.html
+
+
+oidc_id=$(aws eks describe-cluster --name TestK8sCluster --query "cluster.identity.oidc.issuer" --output text | cut -d '/' -f 5)
