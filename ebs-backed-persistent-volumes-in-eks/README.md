@@ -74,8 +74,7 @@ aws eks create-addon \
   --addon-name aws-ebs-csi-driver \
   --service-account-role-arn arn:aws:iam::516176675572:role/my-AmazonEKS_EBS_CSI_DriverRole
 ```
-
- * 
+  
 ### Cleanup. 
  * Delete the eks cluster you provisioned (if you provisioned one for this exercise).  
  * Delete the IAM role: 
@@ -85,22 +84,8 @@ aws iam delete-role --role-name my-AmazonEKS_EBS_CSI_DriverRole
   
 References:  
  - https://docs.aws.amazon.com/eks/latest/userguide/csi-iam-role.html
-
-
-oidc_id=$(aws eks describe-cluster --name TestK8sCluster --query "cluster.identity.oidc.issuer" --output text | cut -d '/' -f 5)
-
-k apply -f volpod.yml
-k apply -f broken-pod.yml
-k apply -f meuservico.yml
-k apply -f meuservico2.yml
-
-k delete -f volpod.yml
-k delete -f broken-pod.yml
-k delete -f meuservico.yml
-k delete -f meuservico2.yml
-
   
-Comando para dar "watch":  
+Useful command: "watch":  
 ```
 watch -n 1 "echo "pods:" && kubectl get pods && echo "" && echo "sc:" && kubectl get storageclasses && echo "" && echo "pv:" && kubectl get persistentvolume && echo "" && echo "pvc:" && kubectl get persistentvolumeclaim"
 ```
