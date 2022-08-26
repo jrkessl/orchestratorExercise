@@ -4,10 +4,12 @@
  * Set your working region.  
 ```export AWS_DEFAULT_REGION=sa-east-1```
  * View your cluster's OIDC provider URL (update your cluster name in parameter '--name')  
-```aws eks describe-cluster \
+```
+aws eks describe-cluster \
   --name TestK8sCluster \ 
   --query "cluster.identity.oidc.issuer" \
-  --output text```  
+  --output text
+```  
  * Create file 'aws-ebs-csi-driver-trust-policy.json' with the following content (Update: OIDC code, account number, region).  
 ```{
   "Version": "2012-10-17",
