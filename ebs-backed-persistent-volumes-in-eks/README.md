@@ -45,7 +45,9 @@ aws iam attach-role-policy \
   --role-name my-AmazonEKS_EBS_CSI_DriverRole
 ```
 ### Install eksctl (to create an IAM OIDC identity provider for your cluster)  
-```curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp```  
+```
+curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+```  
 ```sudo mv /tmp/eksctl /usr/local/bin```  
 (to test)```eksctl version```  
 ### Create an IAM OIDC identity provider for your cluster (using eksctl)
