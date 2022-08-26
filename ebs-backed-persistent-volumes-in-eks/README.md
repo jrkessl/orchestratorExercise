@@ -51,7 +51,10 @@ curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/d
 ```
 sudo mv /tmp/eksctl /usr/local/bin
 ```  
-(to test)```eksctl version```  
+(to test)
+```
+eksctl version
+```  
 ### Create an IAM OIDC identity provider for your cluster (using eksctl)
  * 
 
