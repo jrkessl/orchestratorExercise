@@ -3,7 +3,7 @@
  * Provision a working EKS cluster.
  * Set your working region.  
 ```export AWS_DEFAULT_REGION=sa-east-1```
- * View your cluster's OIDC provider URL (update your cluster name in parameter '--name')
+ * View your cluster's OIDC provider URL (update your cluster name in parameter '--name')  
 ```aws eks describe-cluster \
   --name TestK8sCluster \ 
   --query "cluster.identity.oidc.issuer" \
