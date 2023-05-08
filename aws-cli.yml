@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aws-cli
+  #namespace: nexus
+spec:
+  replicas: 1 
+  selector:
+    matchLabels:
+        app: aws-cli
+  template:
+    metadata:
+      labels:
+        app: aws-cli
+    spec:
+      containers:
+        - name: container1
+          imagePullPolicy: Always
+          image: amazon/aws-cli
+          command: ["/bin/sh", "-c", "sleep infinity"]
+          
+        
