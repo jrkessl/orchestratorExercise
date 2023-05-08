@@ -11,3 +11,6 @@ Useful references: how to launch VMs to run orchestrators; initializing docker s
 
 ## sample-nginx-k8s.yml
 Just a sample nginx declarative yml to deploy nginx in port 80 to your k8s cluster.
+  
+## aws-cli-helper-pod  
+This is just a manifest that deploys a pod to your cluster, running the AWS CLI image. Then you can exec into this pod and test AWS CLI commands, this way testing the IAM permissions granted to your cluster's worker nodes.
