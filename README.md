@@ -15,5 +15,7 @@ Just a sample nginx declarative yml to deploy nginx in port 80 to your k8s clust
 ## aws-cli-helper-pod  
 This is just a manifest that deploys a pod to your cluster, running the AWS CLI image. Then you can exec into this pod and test AWS CLI commands, this way testing the IAM permissions granted to your cluster's worker nodes.  
   
-## rbac-scrubber  
-This bash script sweeps all the cluster role bindings or role bindings in your cluster to investige who is granting RBAC permissions to a given service account.  
+## scrubber  
+This folder contains bash scripts that sweep the current k8s cluster analyzing cluster objects searching for particular conditions. This is can be useful in situations line: 
+ - Search the cluster role bindings or role bindings in your cluster to investige who is granting RBAC permissions to a given service account.
+ - Search the deployments to see who is still using a particular image. 
