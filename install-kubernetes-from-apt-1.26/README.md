@@ -69,14 +69,18 @@ sudo apt-get update
 sudo apt-get install -y apt-transport-https=2.4.9
 sudo apt-get install -y ca-certificates=20211016ubuntu0.22.04.1
 sudo apt-get install -y curl
-sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+
 echo "Add the GPG key and apt repository."
-echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
+echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+
 echo "Update apt and install the latest version of kubelet, kubeadm, and kubectl"
 sudo apt-get update
+
 sudo apt-get install -y kubelet=1.26.4-00
 sudo apt-get install -y kubectl=1.26.4-00 
 sudo apt-get install -y kubeadm=1.26.4-00
+
 sudo apt-mark hold kubelet kubeadm kubectl
 echo "Add the node IP to KUBELET_EXTRA_ARGS."
 sudo touch /etc/default/kubelet
@@ -87,7 +91,7 @@ echo "local_ip = $local_ip"
 cat > /etc/default/kubelet << EOF
 KUBELET_EXTRA_ARGS=--node-ip=$local_ip
 EOF
-echo Initialize Kubeadm On Master Node To Setup Control Plane (master node with private IP)"
+echo "Initialize Kubeadm On Master Node To Setup Control Plane (master node with private IP)"
 IPADDR=$local_ip
 NODENAME=$(hostname -s)
 echo "NODENAME = $NODENAME"
@@ -95,6 +99,8 @@ POD_CIDR="10.0.0.0/16"
 echo "Now, initialize the master node control plane configurations using the kubeadm command (for a Private IP address-based setup use the following init command)."
 sudo kubeadm init --apiserver-advertise-address=$IPADDR  --apiserver-cert-extra-sans=$IPADDR  --pod-network-cidr=$POD_CIDR --node-name $NODENAME --ignore-preflight-errors Swap
 ```
+
+
 
 # (agora ele tem que dar a mensagem de que o control-plane foi inicializado)
 
