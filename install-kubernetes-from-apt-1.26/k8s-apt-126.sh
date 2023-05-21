@@ -1,14 +1,5 @@
-# Kubernetes 1.25 from apt repository
-This is about installing Kubernetes from the apt repository, version 1.26. Here I am using the strategy of fixing software versions as much as possible, instead of using latest versions, to ensure these instructions won't break as the releases progress over time. This was tailored to run under my Windows 11 host, that has an USB wi-fi adapter. Some thing will break if host conditions change.
-This follows these instructions: https://devopscube.com/setup-kubernetes-cluster-kubeadm/
-1. Have multipass installed. 
-Test it with `multipass list`
-2. Launch a VM with Multipass.  
-Notice the fixed hostname, `master1`. This should launch Ubuntu 22.04.  
-` `
-3. Log into it. `multipass shell master1`
-4. Now we do a bunch of installations and configurations. 
-```
+#!/bash/bin
+set -e
 echo "Enable iptables Bridged Traffic on all the Nodes"
 cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf
 overlay
@@ -98,31 +89,3 @@ echo "NODENAME = $NODENAME"
 POD_CIDR="10.0.0.0/16"
 echo "Now, initialize the master node control plane configurations using the kubeadm command (for a Private IP address-based setup use the following init command)."
 sudo kubeadm init --apiserver-advertise-address=$IPADDR  --apiserver-cert-extra-sans=$IPADDR  --pod-network-cidr=$POD_CIDR --node-name $NODENAME --ignore-preflight-errors Swap
-```
-
-
-
-# (agora ele tem que dar a mensagem de que o control-plane foi inicializado)
-
-
-
-Your Kubernetes control-plane has initialized successfully!
-
-To start using your cluster, you need to run the following as a regular user:
-
-  mkdir -p $HOME/.kube
-  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-  sudo chown $(id -u):$(id -g) $HOME/.kube/config
-
-Alternatively, if you are the root user, you can run:
-
-  export KUBECONFIG=/etc/kubernetes/admin.conf
-
-You should now deploy a pod network to the cluster.
-Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
-  https://kubernetes.io/docs/concepts/cluster-administration/addons/
-
-Then you can join any number of worker nodes by running the following on each as root:
-
-kubeadm join 192.168.0.101:6443 --token r0x0fl.vx790n7nv3c93hrg \
-        --discovery-token-ca-cert-hash sha256:7129bbddb33f7914c5d78abd6af3eb154ca371872105a780d0842970137f3b9b
