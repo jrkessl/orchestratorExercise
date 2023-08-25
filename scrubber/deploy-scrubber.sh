@@ -6,7 +6,7 @@
 # instead, they are simply using dkr.gtl.net/dkr/*. 
 echo "Checking deployments..."
 #namespace=release
-for names in $( kubectl get ns | grep -v NAME | awk '{print $1}' ); do
+for names in $( kubectl get ns | grep -v NAME | grep -v helm-command | awk '{print $1}' ); do
     echo "namespace = $names"
     for dep in $( kubectl get deploy -n $names | grep -v NAME | awk '{print $1}' ); do
         image=$(kubectl -n $names get deploy/$dep -o yaml | grep -i image: )
