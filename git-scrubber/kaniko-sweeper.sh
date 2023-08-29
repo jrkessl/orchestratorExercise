@@ -14,8 +14,8 @@
 set -e 
 
 # clear results file
-if [[ -e /tmp/result ]]; then
-    rm /tmp/result
+if [[ -e ~/Documents/gitlab-viapath/result-master ]]; then
+    rm ~/Documents/gitlab-viapath/result-master
 fi
 
 # how many lines/projects in the current folder (excluding trash lines from ls -la)
@@ -31,14 +31,14 @@ for folder in $( ls -alF | grep -E ^d | grep -v -E -- "\.\/" |  grep -v helm-com
     echo "we are in: $(pwd)"
 
     # here we specify which branch are we testing. --------------------------------
-    echo "git checkout qa..."
+    echo "git checkout master/main..."
     error=0
-    git checkout qa || error=1
+    git checkout master || git checkout main || error=1
     if [[ $error -eq 1 ]]; then
         # string padding to 40 chars lenght
         forty="                                        " 
         folder="${folder:0:40}${forty:0:$((40 - ${#folder}))}"
-        echo " ---------------------- Project ${folder}, does not have a qa branch. " | tee -a /tmp/result
+        echo " ---------------------- Project ${folder}, does not have a master/main branch. " | tee -a ~/Documents/gitlab-viapath/result-master
         echo "One more tested!"
         echo ""
         cd .. 
@@ -56,11 +56,11 @@ for folder in $( ls -alF | grep -E ^d | grep -v -E -- "\.\/" |  grep -v helm-com
         # search for wanted keywords (docker keywords)
         echo "grepping directory..."
         echo "searching for 'docker tag'."
-        grep -iRl "docker tag" .  | grep -v README | grep -v .git >> /tmp/tmp || echo "no docker tag found."
+        grep -iRl "docker tag" .  | grep -v README | grep -v .git/ >> /tmp/tmp || echo "no docker tag found."
         echo "searching for 'docker build'."
-        grep -iRl "docker build" .  | grep -v README | grep -v .git >> /tmp/tmp || echo "no docker build found."
+        grep -iRl "docker build" .  | grep -v README | grep -v .git/ >> /tmp/tmp || echo "no docker build found."
         echo "searching for 'docker push'."
-        grep -iRl "docker push" .  | grep -v README | grep -v .git >> /tmp/tmp || echo "no docker push found."
+        grep -iRl "docker push" .  | grep -v README | grep -v .git/ >> /tmp/tmp || echo "no docker push found."
         # do we have anything?
         echo "lets see what we found."
         # echo "the contents of /tmp/tmp are: $(cat /tmp/tmp)."
@@ -76,14 +76,14 @@ for folder in $( ls -alF | grep -E ^d | grep -v -E -- "\.\/" |  grep -v helm-com
             # string padding to 40 chars lenght
             forty="                                        " 
             folder="${folder:0:40}${forty:0:$((40 - ${#folder}))}"
-            echo " ---------------------- Project ${folder}, branch ${currentbranch}, these files still use docker: " | tee -a /tmp/result
-            echo "${files}" | tee -a /tmp/result
+            echo " ---------------------- Project ${folder}, branch ${currentbranch}, these files still use docker: " | tee -a ~/Documents/gitlab-viapath/result-master
+            echo "${files}" | tee -a ~/Documents/gitlab-viapath/result-master
             rm /tmp/tmp
         else    
             # string padding to 40 chars lenght
             forty="                                        " 
             folder="${folder:0:40}${forty:0:$((40 - ${#folder}))}"
-            echo " ---------------------- Project ${folder}, branch ${currentbranch}, is clear. " | tee -a /tmp/result
+            echo " ---------------------- Project ${folder}, branch ${currentbranch}, is clear. " | tee -a ~/Documents/gitlab-viapath/result-master
         fi
         echo "One more tested!"
         echo ""
@@ -91,6 +91,6 @@ for folder in $( ls -alF | grep -E ^d | grep -v -E -- "\.\/" |  grep -v helm-com
     fi
 done
 
-#cat /tmp/result
+#cat ~/Documents/gitlab-viapath/result-master
 
 echo "goodbye"
