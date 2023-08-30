@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# this works for master/main and qa.
-
 # What happens here?
 # This script sweeps projects looking for the ones still using Docker instead of Kaniko.
 # How does it work?
@@ -14,12 +12,12 @@
 set -e 
 
 # clear results file
-if [[ -e ~/Documents/gitlab-viapath/result-master ]]; then
-    rm ~/Documents/gitlab-viapath/result-master
+if [[ -e ~/Documents/gitlab-viapath/result-qa ]]; then
+    rm ~/Documents/gitlab-viapath/result-qa
 fi
 
 # how many lines/projects in the current folder (excluding trash lines from ls -la)
-quant=$(ls -alF | grep -E ^d | grep -v -E -- "\.\/" |  grep -v helm-command | grep -v helm-oms | wc -l)
+# quant=$(ls -alF | grep -E ^d | grep -v -E -- "\.\/" |  grep -v helm-command | grep -v helm-oms | wc -l)
 # grep -E ^d           = filters out everything that is not a directory
 # grep -v -E -- "\.\/" = filters out the first "." and ".." directories that are in the result of the ls -la command
 
@@ -31,14 +29,14 @@ for folder in $( ls -alF | grep -E ^d | grep -v -E -- "\.\/" |  grep -v helm-com
     echo "we are in: $(pwd)"
 
     # here we specify which branch are we testing. --------------------------------
-    echo "git checkout master/main..."
+    echo "git checkout qa..."
     error=0
-    git checkout master || git checkout main || error=1
+    git checkout qa || error=1
     if [[ $error -eq 1 ]]; then
         # string padding to 40 chars lenght
         forty="                                        " 
         folder="${folder:0:40}${forty:0:$((40 - ${#folder}))}"
-        echo " ---------------------- Project ${folder}, does not have a master/main branch. " | tee -a ~/Documents/gitlab-viapath/result-master
+        echo " ---------------------- Project ${folder}, does not have a qa branch. " | tee -a ~/Documents/gitlab-viapath/result-qa
         echo "One more tested!"
         echo ""
         cd .. 
@@ -49,41 +47,37 @@ for folder in $( ls -alF | grep -E ^d | grep -v -E -- "\.\/" |  grep -v helm-com
         git pull #>/dev/null
         echo "git pull finished." 
         echo "clearing file..."
-        # clear /tmp/tmp file
-        if [[ -e /tmp/tmp ]]; then
-            rm /tmp/tmp
+        # clear /tmp/tmp-qa file
+        if [[ -e /tmp/tmp-qa ]]; then
+            rm /tmp/tmp-qa
         fi
         # search for wanted keywords (docker keywords)
         echo "grepping directory..."
-        echo "searching for 'docker tag'."
-        grep -iRl "docker tag" .  | grep -v README | grep -v .git/ >> /tmp/tmp || echo "no docker tag found."
-        echo "searching for 'docker build'."
-        grep -iRl "docker build" .  | grep -v README | grep -v .git/ >> /tmp/tmp || echo "no docker build found."
-        echo "searching for 'docker push'."
-        grep -iRl "docker push" .  | grep -v README | grep -v .git/ >> /tmp/tmp || echo "no docker push found."
+        echo "searching for 'docker tag/build/push'."
+        grep -iRlE "(docker push)|(docker tag)|(docker build)" .  | grep -v README | grep -v .git/ >> /tmp/tmp-qa || echo "no docker commands found."
         # do we have anything?
         echo "lets see what we found."
-        # echo "the contents of /tmp/tmp are: $(cat /tmp/tmp)."
+        # echo "the contents of /tmp/tmp-qa are: $(cat /tmp/tmp-qa)."
         # echo "doing an ls: $(ls -la /tmp | grep tmp | grep -v snap-private)"
-        # if [[ -s /tmp/tmp ]]; then
+        # if [[ -s /tmp/tmp-qa ]]; then
         #     echo "that is a true."
         # else
         #     echo "that is not a true."
         # fi
-        if [[ -s /tmp/tmp ]]; then
-            files=$(cat /tmp/tmp | sort | uniq)
+        if [[ -s /tmp/tmp-qa ]]; then
+            files=$(cat /tmp/tmp-qa | sort | uniq)
 
             # string padding to 40 chars lenght
             forty="                                        " 
             folder="${folder:0:40}${forty:0:$((40 - ${#folder}))}"
-            echo " ---------------------- Project ${folder}, branch ${currentbranch}, these files still use docker: " | tee -a ~/Documents/gitlab-viapath/result-master
-            echo "${files}" | tee -a ~/Documents/gitlab-viapath/result-master
-            rm /tmp/tmp
+            echo " ---------------------- Project ${folder}, branch ${currentbranch}, these files still use docker: " | tee -a ~/Documents/gitlab-viapath/result-qa
+            echo "${files}" | tee -a ~/Documents/gitlab-viapath/result-qa
+            rm /tmp/tmp-qa
         else    
             # string padding to 40 chars lenght
             forty="                                        " 
             folder="${folder:0:40}${forty:0:$((40 - ${#folder}))}"
-            echo " ---------------------- Project ${folder}, branch ${currentbranch}, is clear. " | tee -a ~/Documents/gitlab-viapath/result-master
+            echo " ---------------------- Project ${folder}, branch ${currentbranch}, is clear. " | tee -a ~/Documents/gitlab-viapath/result-qa
         fi
         echo "One more tested!"
         echo ""
@@ -91,6 +85,6 @@ for folder in $( ls -alF | grep -E ^d | grep -v -E -- "\.\/" |  grep -v helm-com
     fi
 done
 
-#cat ~/Documents/gitlab-viapath/result-master
+#cat ~/Documents/gitlab-viapath/result-qa
 
 echo "goodbye"
