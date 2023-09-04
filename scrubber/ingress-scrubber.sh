@@ -22,16 +22,26 @@ pad40() {
 
 
 echo "Checking ingresses..."
-names=qa
+names=release
 #for names in $( kubectl get ns | grep -v NAME | awk '{print $1}' ); do
     echo "namespace = $names"
     for ing in $( kubectl -n $names get ing  | grep -v NAME | awk '{print $1}' ); do # getting the list of ingresses
+        # get the manifest of the ingress
+        tempfile="/tmp/dkjflskdjefdfd" 
+        echo "" > $tempfile
+        kubectl -n $names get ing/$ing -o yaml > $tempfile
         
-        groupnameline=$(kubectl -n $names describe ing/$ing | grep group.name | awk '{print $2}')
-        cert=$(kubectl -n $names describe ing/$ing | grep certificate-arn | awk '{print $3}')
+        # get attribute group.name
+        groupname=$(cat $tempfile | yq '.metadata.annotations."alb.ingress.kubernetes.io/group.name"')
+
+        # get attribute certificate-arn
+        cert=$(cat $tempfile | yq '.metadata.annotations."alb.ingress.kubernetes.io/certificate-arn"')
         cert2=${cert:47:8}
 
-        echo "$(pad40 $ing), $(pad40 $groupnameline), $(pad40 $cert2);"
+        # get attribute load-balancer-name
+        lbn=$(cat $tempfile | yq '.metadata.annotations."alb.ingress.kubernetes.io/load-balancer-name"')
+
+        echo "$(pad40 $ing), $(pad40 $groupname), ${cert2}, ${lbn};"
 
         # echo "$(pad40 $ing), $(pad40 $cert2);"
 
