@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ubuntu-helper
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+        app: ubuntu-helper
+  template:
+    metadata:
+      labels:
+        app: ubuntu-helper
+    spec:
+      containers:
+        - name: container1
+          imagePullPolicy: Always
+          image: ubuntu
+          command: ["/bin/sh", "-c", "sleep infinity"]

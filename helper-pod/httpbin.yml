@@ -1,0 +1,33 @@
+# A deployment and clusterIP service for httpbin. So you can do some tests from within the cluster.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: httpbin
+  name: httpbin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: httpbin
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: httpbin    
+    spec:
+      containers:
+      - image: kennethreitz/httpbin
+        name: httpbin
+---  
+apiVersion: v1
+kind: Service
+metadata:
+  name: httpbin-cip
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+  selector:
+    app: httpbin
+  type: ClusterIP
