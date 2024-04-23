@@ -4,21 +4,40 @@ kind: Deployment
 metadata:
   labels:
     app: httpbin
+    tier: app
   name: httpbin
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: httpbin
+      tier: app
   template:
     metadata:
       creationTimestamp: null
       labels:
-        app: httpbin    
+        app: httpbin
+        tier: app
     spec:
       containers:
-      - image: kennethreitz/httpbin
-        name: httpbin
+        - image: kennethreitz/httpbin
+          name: httpbin
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 500Mi
+            requests:
+              cpu: 1000m
+              memory: 500Mi
+          securityContext:
+            # runAsUser: 999      # These settings cause the pod to fail in nonprod9 cluster.
+            # runAsNonRoot: true
+            # capabilities:
+            #   drop:
+            #     - "ALL"
+            allowPrivilegeEscalation: false
+            seccompProfile:
+              type: RuntimeDefault
 ---  
 apiVersion: v1
 kind: Service
