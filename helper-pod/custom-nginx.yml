@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: www-data
+          mountPath: /usr/share/nginx/html
+        command: ["/bin/sh", "-c"]
+        args:
+        - |
+          echo 'hello world' > /usr/share/nginx/html/index.html
+          exec nginx -g 'daemon off;'
+      volumes:
+      - name: www-data
+        emptyDir: {}
+---  
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-cip
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+  selector:
+    app: nginx
+  type: ClusterIP
