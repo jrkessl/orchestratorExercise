@@ -2,28 +2,49 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nginx-deployment
+  labels:
+    tier: app
 spec:
   selector:
     matchLabels:
       app: nginx
+      tier: app
   template:
     metadata:
       labels:
         app: nginx
+        tier: app
     spec:
       containers:
-      - name: nginx
-        image: nginx
-        ports:
-        - containerPort: 80
-        volumeMounts:
-        - name: www-data
-          mountPath: /usr/share/nginx/html
-        command: ["/bin/sh", "-c"]
-        args:
-        - |
-          echo 'hello world' > /usr/share/nginx/html/index.html
-          exec nginx -g 'daemon off;'
+        - name: nginx
+          image: nginxinc/nginx-unprivileged
+          ports:
+          - containerPort: 8080
+          volumeMounts:
+          - name: www-data
+            mountPath: /usr/share/nginx/html
+          command: ["/bin/sh", "-c"]
+          args:
+          - |
+            echo 'hello world' > /usr/share/nginx/html/index.html
+            exec nginx -g 'daemon off;'
+          securityContext:
+            runAsUser: 33
+            runAsGroup: 33
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            seccompProfile:
+              type: RuntimeDefault
+            capabilities:
+              drop:
+                - "ALL"          
+          resources:
+            limits:
+              cpu: 250m
+              memory: 200Mi
+            requests:
+              cpu: 250m
+              memory: 200Mi
       volumes:
       - name: www-data
         emptyDir: {}
@@ -34,7 +55,7 @@ metadata:
   name: nginx-cip
 spec:
   ports:
-  - port: 80
+  - port: 8080
     protocol: TCP
   selector:
     app: nginx
