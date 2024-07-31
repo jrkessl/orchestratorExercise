@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aws-cli-helper
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+        app: aws-cli
+        tier: app
+  template:
+    metadata:
+      labels:
+        app: aws-cli
+        tier: app
+    spec:
+      # securityContext:
+      #   fsGroup: 1
+      #   supplementalGroups:
+      #   - 1
+      containers:
+        - name: container1
+          imagePullPolicy: Always
+          image: amazon/aws-cli
+          command: ["/bin/sh", "-c", "sleep infinity"]
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            runAsNonRoot: true
+            runAsUser: 65534
+            seccompProfile:
+              type: RuntimeDefault
+          resources:
+            limits:
+              cpu: "1"
+              memory: 512M
+            requests:
+              cpu: 100m
+              memory: 512M
