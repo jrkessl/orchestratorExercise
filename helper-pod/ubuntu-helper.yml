@@ -17,7 +17,7 @@ spec:
         tier: app
     spec:
       containers:
-        - name: container1
+        - name: ubuntu
           resources:
             limits:
               cpu: 250m
