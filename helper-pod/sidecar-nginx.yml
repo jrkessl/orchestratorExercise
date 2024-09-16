@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+  namespace: prd1741
+  labels:
+    tier: app
+    productcode: prd1741
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+      tier: app
+      productcode: prd1741
+  template:
+    metadata:
+      labels:
+        app: nginx
+        tier: app
+        productcode: prd1741
+    spec:
+      containers:
+        - name: nginx
+          image: nginxinc/nginx-unprivileged
+          ports:
+          - containerPort: 8080
+          volumeMounts:
+          - name: www-data
+            mountPath: /usr/share/nginx/html
+          command: ["/bin/sh", "-c"]
+          args:
+          - |
+            echo 'hello world from the solo nginx' > /usr/share/nginx/html/index.html
+            exec nginx -g 'daemon off;'
+          securityContext:
+            runAsUser: 33
+            runAsGroup: 33
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            seccompProfile:
+              type: RuntimeDefault
+            capabilities:
+              drop:
+                - "ALL"          
+          resources:
+            limits:
+              cpu: 250m
+              memory: 200Mi
+            requests:
+              cpu: 250m
+              memory: 200Mi
+      volumes:
+      - name: www-data
+        emptyDir: {}
+---  
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+  namespace: prd1741
+  labels:
+    name: nginx
+    productcode: prd1741
+    tier: app
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+  selector:
+    app: nginx
+    tier: app
+    productcode: prd1741
+  type: ClusterIP
