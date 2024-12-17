@@ -1,0 +1,7 @@
+# this was used to build and push jrkessl/bash-withnano:5.2 
+from bash:5.2
+RUN apk update
+RUN apk add nano
+ENTRYPOINT ["docker-entrypoint.sh"]
+CMD ["bash"]
+
