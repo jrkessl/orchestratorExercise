@@ -9,7 +9,6 @@ metadata:
 spec:
   containers:
   - image: jrkessl/ubuntu
-  # - image: jrkessl/probes:long-startup
     name: ubuntu-helper
     resources:
       limits:
