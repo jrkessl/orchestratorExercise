@@ -5,12 +5,6 @@ metadata:
     run: ubuntu-helper
     tier: app
     notes: "I.am.a.helper.pod.for.troubleshooting.Feel.free.to.delete.me"
-            # 1234567890
-            #           1234567890
-            #                     1234567890
-            #                               1234567890
-            #                                         1234567890
-            #                                                   1234567890
   name: ubuntu-helper
 spec:
   containers:
