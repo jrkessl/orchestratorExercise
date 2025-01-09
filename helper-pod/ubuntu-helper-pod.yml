@@ -8,8 +8,9 @@ metadata:
   name: ubuntu-helper
 spec:
   containers:
-  - image: jrkessl/ubuntu
+  - image: jrkessl/ubuntu:2025-01-09
     name: ubuntu-helper
+    imagePullPolicy: Always
     resources:
       limits:
         cpu: 250m
@@ -19,7 +20,7 @@ spec:
         memory: 200Mi
     command: ["/bin/sh", "-c", "sleep 28800"] # 28800 = 8 hours
     securityContext:
-      runAsUser: 999
+      runAsUser: 1000
       runAsNonRoot: true
       allowPrivilegeEscalation: false
       seccompProfile:
