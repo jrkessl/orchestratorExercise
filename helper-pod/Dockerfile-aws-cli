@@ -1,0 +1,16 @@
+# work in progress
+
+FROM ubuntu 
+
+RUN apt-get update && apt-get install curl unzip yq jq -y
+
+# install aws cli
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+RUN unzip awscliv2.zip
+RUN ./aws/install
+
+CMD ["/bin/bash"]
+
+# docker build . -t jrkessl/aws-cli --network=host && docker push jrkessl/aws-cli
+
+
