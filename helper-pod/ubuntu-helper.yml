@@ -4,9 +4,11 @@ metadata:
   labels:
     run: ubuntu-helper
     tier: app
-    notes: "I.am.a.helper.pod.for.troubleshooting.Feel.free.to.delete.me"
   name: ubuntu-helper
+  annotations:
+    about: "I am a helper pod for troubleshooting. Feel free to delete me if I have been here for a while."
 spec:
+  # ttlSecondsAfterFinished: 3  # Automatically delete the pod 1 hour after completion
   containers:
   - image: jrkessl/ubuntu:latest
     name: ubuntu-helper
@@ -31,4 +33,3 @@ spec:
   terminationGracePeriodSeconds: 0
   dnsPolicy: ClusterFirst
   restartPolicy: Never
-
