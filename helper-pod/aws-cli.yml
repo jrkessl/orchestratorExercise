@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: aws-cli-helper
+  name: aws-cli
 spec:
   replicas: 1
   selector:
@@ -12,8 +12,35 @@ spec:
       labels:
         app: aws-cli
     spec:
+      terminationGracePeriodSeconds: 0
+
+      # pod anti-affinity. So they spread evenly across nodes. Preferred. Meaning they will go more than one pod in a node, if there are no alternatives.
+      # preferred
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app: aws-cli
+              topologyKey: "kubernetes.io/hostname"
+
+      # pod anti-affinity. So they spread evenly across nodes. Required.  Meaning pods will respect the rule even if it means some pods won't be scheduled. 
+      # required 
+      # affinity:
+      #   podAntiAffinity:
+      #     requiredDuringSchedulingIgnoredDuringExecution:
+      #     - labelSelector:
+      #         matchLabels:
+      #           app: aws-cli
+      #       topologyKey: "kubernetes.io/hostname"            
       containers:
         - name: container1
           imagePullPolicy: Always
           image: amazon/aws-cli
           command: ["/bin/sh", "-c", "sleep infinity"]
+          resources:
+            limits:
+              cpu: 0.150 
+              memory: 200Mi          
