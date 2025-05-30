@@ -1,0 +1,38 @@
+# This is the Dockerfile used to create and push image "jrkessl/ubuntu"
+FROM ubuntu 
+
+# install curl, jq
+RUN apt-get update && apt-get install curl jq wget nmap dnsutils nano -y 
+
+# install yq 
+RUN wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /bin/yq && chmod +x /bin/yq
+
+# kubectl, latest amd64 version: donwload, verify and install 
+# following instructions from https://kubernetes.io/pt-br/docs/tasks/tools/install-kubectl-linux/ 
+RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256" && echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check && install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+
+# install nc
+RUN apt-get install netcat-traditional -y 
+
+# go in a common location 
+RUN wget https://go.dev/dl/go1.24.3.linux-amd64.tar.gz -O /tmp/go1.24.3.linux-amd64.tar.gz 
+RUN tar -C /usr/local -xzf /tmp/go1.24.3.linux-amd64.tar.gz
+RUN export PATH=$PATH:/usr/local/go/bin
+    # go is available at /usr/local/go/bin 
+
+# install mtypes, but for all users 
+RUN mkdir -p /opt/go-binaries # directory to install mtypes 
+RUN chmod 777 /opt/go-binaries
+RUN GOBIN=/opt/go-binaries /usr/local/go/bin/go install github.com/prometheus-community/avalanche/cmd/mtypes@v0.7.0
+    # mtypes pode ser rodado com: /opt/go-binaries/mtypes -resource=http://avalanche-svc:9001/metrics
+
+# Configure some settings user ID 1000 (ubuntu). 
+RUN echo "-w \"\\\n%{http_code}\\\n\"" > /home/ubuntu/.curlrc
+RUN echo "export PATH=\$PATH:/usr/local/go/bin" >> /home/ubuntu/.bashrc
+
+CMD ["/bin/bash"]
+
+# docker build . -f Dockerfile-avalanche -t jrkessl/avalanche:v0.7.0 --network=host && docker push jrkessl/avalanche:v0.7.0
+# docker tag jrkessl/avalanche:v0.7.0 jrkessl/avalanche:latest && docker push jrkessl/avalanche:latest
+
+# docker build . -f Dockerfile-avalanche -t jrkessl/avalanche:v0.7.0 --network=host && docker push jrkessl/avalanche:v0.7.0 && docker tag jrkessl/avalanche:v0.7.0 jrkessl/avalanche:latest && docker push jrkessl/avalanche:latest
