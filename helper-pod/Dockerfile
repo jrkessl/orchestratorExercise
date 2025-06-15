@@ -14,9 +14,17 @@ RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/s
 # install nc
 RUN apt install netcat-traditional -y 
 
+# postgresql client 
+RUN apt update
+RUN apt install postgresql-client-common -y
+RUN apt install postgresql-client -y
+
 # Configure some settings user ID 1000 (ubuntu). 
 RUN echo "-w \"\\\n%{http_code}\\\n\"" > /home/ubuntu/.curlrc
 
 CMD ["/bin/bash"]
 
-# docker build . -t jrkessl/ubuntu:2025-01-09 --network=host && docker push jrkessl/ubuntu:2025-01-09
+# docker build . --network=host -t jrkessl/ubuntu:2025-06-15 --network=host && docker push jrkessl/ubuntu:2025-06-15
+
+# docker tag jrkessl/ubuntu:2025-06-15 jrkessl/ubuntu:latest
+# docker push jrkessl/ubuntu:latest
