@@ -2,7 +2,7 @@
 FROM ubuntu 
 
 # install curl, jq
-RUN apt-get update && apt-get install curl jq wget nmap dnsutils nano -y 
+RUN apt-get update && apt-get install curl jq wget nmap dnsutils nano rsync -y 
 
 # install yq 
 RUN wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /bin/yq && chmod +x /bin/yq
@@ -30,7 +30,7 @@ RUN chmod 666 /tmp/dependencies.txt
 
 CMD ["/bin/bash"]
 
-# docker build . --network=host -t jrkessl/ubuntu:2025-08-25 --network=host && docker push jrkessl/ubuntu:2025-08-25
+# docker build . --network=host -t jrkessl/ubuntu:2025-10-07 --network=host && docker push jrkessl/ubuntu:2025-10-07
 
-# docker tag jrkessl/ubuntu:2025-08-25 jrkessl/ubuntu:latest
+# docker tag jrkessl/ubuntu:2025-10-07 jrkessl/ubuntu:latest
 # docker push jrkessl/ubuntu:latest
