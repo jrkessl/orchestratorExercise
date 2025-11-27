@@ -2,7 +2,7 @@
 FROM ubuntu 
 
 # install curl, jq
-RUN apt-get update && apt-get install curl jq wget nmap dnsutils nano rsync -y 
+RUN apt update && apt install curl jq wget nmap dnsutils nano rsync -y 
 
 # install yq 
 RUN wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /bin/yq && chmod +x /bin/yq
@@ -19,6 +19,9 @@ RUN apt update
 RUN apt install postgresql-client-common -y
 RUN apt install postgresql-client -y
 
+# mariadb client (mysql compatible)
+RUN apt install mariadb-client -y
+
 # Configure some settings user ID 1000 (ubuntu). 
 RUN echo "-w \"\\\n%{http_code}\\\n\"" > /home/ubuntu/.curlrc
 
@@ -30,7 +33,7 @@ RUN chmod 666 /tmp/dependencies.txt
 
 CMD ["/bin/bash"]
 
-# docker build . --network=host -t jrkessl/ubuntu:2025-10-07 --network=host && docker push jrkessl/ubuntu:2025-10-07
+# docker build . --network=host -t jrkessl/ubuntu:2025-11-27 --network=host && docker push jrkessl/ubuntu:2025-11-27
 
-# docker tag jrkessl/ubuntu:2025-10-07 jrkessl/ubuntu:latest
+# docker tag jrkessl/ubuntu:2025-11-27 jrkessl/ubuntu:latest
 # docker push jrkessl/ubuntu:latest
