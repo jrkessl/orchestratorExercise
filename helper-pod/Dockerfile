@@ -2,7 +2,7 @@
 FROM ubuntu 
 
 # install curl, jq
-RUN apt update && apt install curl jq wget nmap dnsutils nano rsync redis-tools -y 
+RUN apt update && apt install curl jq wget nmap dnsutils nano rsync redis-tools inetutils-traceroute unzip -y 
 
 # install yq 
 RUN wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /bin/yq && chmod +x /bin/yq
@@ -22,6 +22,11 @@ RUN apt install postgresql-client -y
 # mariadb client (mysql compatible)
 RUN apt install mariadb-client -y
 
+# aws cli 
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+RUN unzip awscliv2.zip
+RUN ./aws/install
+
 # Configure some settings user ID 1000 (ubuntu). 
 RUN echo "-w \"\\\n%{http_code}\\\n\"" > /home/ubuntu/.curlrc
 
@@ -33,7 +38,7 @@ RUN chmod 666 /tmp/dependencies.txt
 
 CMD ["/bin/bash"]
 
-# docker build . --network=host -t jrkessl/ubuntu:2026-02-13 --network=host && docker push jrkessl/ubuntu:2026-02-13
+# docker build . --network=host -t jrkessl/ubuntu:2026-02-18 --network=host && docker push jrkessl/ubuntu:2026-02-18
 
-# docker tag jrkessl/ubuntu:2026-02-13 jrkessl/ubuntu:latest
+# docker tag jrkessl/ubuntu:2026-02-18 jrkessl/ubuntu:latest
 # docker push jrkessl/ubuntu:latest
