@@ -2,7 +2,7 @@
 FROM ubuntu 
 
 # install curl, jq
-RUN apt update && apt install curl jq wget nmap dnsutils nano rsync redis-tools inetutils-traceroute unzip -y 
+RUN apt update && apt install curl jq wget nmap dnsutils nano rsync redis-tools inetutils-traceroute unzip less -y 
 
 # install yq 
 RUN wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /bin/yq && chmod +x /bin/yq
