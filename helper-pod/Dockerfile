@@ -30,12 +30,6 @@ RUN ./aws/install
 # Configure some settings user ID 1000 (ubuntu). 
 RUN echo "-w \"\\\n%{http_code}\\\n\"" > /home/ubuntu/.curlrc
 
-# A little executable to help with some tests
-COPY dependencies-tester.sh /tmp/dependencies-tester.sh
-RUN chmod 777 /tmp/dependencies-tester.sh
-RUN touch /tmp/dependencies.txt
-RUN chmod 666 /tmp/dependencies.txt
-
 CMD ["/bin/bash"]
 
 # docker build . --network=host -t jrkessl/ubuntu:2026-02-18 --network=host && docker push jrkessl/ubuntu:2026-02-18
