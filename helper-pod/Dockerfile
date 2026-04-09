@@ -27,12 +27,19 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
 RUN unzip awscliv2.zip
 RUN ./aws/install
 
+# mongosh 
+RUN apt install gnupg2 -y
+RUN wget -qO - https://www.mongodb.org/static/pgp/server-5.0.asc | apt-key add -
+RUN echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/5.0 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-5.0.list
+RUN apt update
+RUN apt install -y mongodb-mongosh mongodb-database-tools
+
 # Configure some settings user ID 1000 (ubuntu). 
 RUN echo "-w \"\\\n%{http_code}\\\n\"" > /home/ubuntu/.curlrc
 
 CMD ["/bin/bash"]
 
-# docker build . --network=host -t jrkessl/ubuntu:2026-02-18 --network=host && docker push jrkessl/ubuntu:2026-02-18
+# docker build . --network=host -t jrkessl/ubuntu:2026-04-09 --network=host && docker push jrkessl/ubuntu:2026-04-09
 
-# docker tag jrkessl/ubuntu:2026-02-18 jrkessl/ubuntu:latest
+# docker tag jrkessl/ubuntu:2026-04-09 jrkessl/ubuntu:latest
 # docker push jrkessl/ubuntu:latest
