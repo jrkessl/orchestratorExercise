@@ -2,7 +2,7 @@
 FROM ubuntu 
 
 # install curl, jq
-RUN apt update && apt install curl jq wget nmap dnsutils nano rsync redis-tools inetutils-traceroute unzip less -y 
+RUN apt update && apt install curl jq wget nmap dnsutils nano rsync redis-tools inetutils-traceroute unzip less iputils-ping -y 
 
 # install yq 
 RUN wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /bin/yq && chmod +x /bin/yq
@@ -39,7 +39,7 @@ RUN echo "-w \"\\\n%{http_code}\\\n\"" > /home/ubuntu/.curlrc
 
 CMD ["/bin/bash"]
 
-# docker build . --network=host -t jrkessl/ubuntu:2026-04-09 --network=host && docker push jrkessl/ubuntu:2026-04-09
+# docker build . --network=host -t jrkessl/ubuntu:2026-06-19 --network=host && docker push jrkessl/ubuntu:2026-06-19
 
-# docker tag jrkessl/ubuntu:2026-04-09 jrkessl/ubuntu:latest
+# docker tag jrkessl/ubuntu:2026-06-19 jrkessl/ubuntu:latest
 # docker push jrkessl/ubuntu:latest
